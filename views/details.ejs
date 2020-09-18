@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>My Blog | <%= title %></title>
+    <link rel="stylesheet" href="/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/solid.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+  </head>
+  <body>
+    <nav>
+      <div class="site-title">
+        <a href="/"><h1>My Blog</h1></a>
+        <p>My first blog Site</p>
+      </div>
+      <ul>
+        <li><a href="/">Blogs</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/blogs/create">New blog</a></li>
+      </ul>
+    </nav>
+
+    <div class="details content">
+      <% if(blogs.length >0){ %> <% blogs.forEach(blog=>{%>
+
+      <h2 class="title"><%=blog.title%></h2>
+      <div class="content">
+        <p class="body justify"><%=blog.body %></p>
+      </div>
+      <a class="delete" data-doc="<%= blog._id %>"
+        ><i class="fas fa-trash"></i
+      ></a>
+
+      <%})} %>
+    </div>
+    <script>
+      const trashcan = document.querySelector("a.delete");
+      trashcan.addEventListener("click", (e) => {
+        const endpoint = `/blogs/${trashcan.dataset.doc}`;
+
+        fetch(endpoint, {
+          method: "DELETE",
+        })
+          .then((response) => response.json())
+          .then((data) => (window.location.href = data.redirect))
+          .catch((err) => console.log(err));
+      });
+    </script>
+  </body>
+  <footer>Copyright &copy; mimaks 2020</footer>
+</html>
